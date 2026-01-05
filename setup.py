@@ -7,7 +7,7 @@ setup(
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     author="toolartS",
-    url="https://github.com/toolartS/dirscan",
+    url="https://github.com/toolartS/tscodescan",
     packages=find_packages(),
     entry_points={
         "console_scripts": [
