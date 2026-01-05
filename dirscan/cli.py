@@ -99,7 +99,7 @@ def main():
     out_dir = os.getcwd() if args.cwd else (args.to or get_download_dir())
     os.makedirs(out_dir, exist_ok=True)
 
-    name = args.name or f"tscodescan_{os.path.basename(root)}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
+    name = args.name or f"tscodescan_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
     out_file = os.path.join(out_dir, name)
 
     with open(out_file, "w", encoding="utf-8", errors="ignore") as out:
