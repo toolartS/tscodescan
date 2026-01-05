@@ -1,12 +1,18 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="dirscan",
+    name="tscodescan",
     version="0.1.0",
+    description="AI-friendly directory and code scanner with tree-first output",
+    long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
+    author="toolartS",
+    url="https://github.com/toolartS/dirscan",
     packages=find_packages(),
     entry_points={
         "console_scripts": [
-            "dirscan=dirscan.cli:main"
+            "tscodescan=dirscan.cli:main"
         ]
     },
+    python_requires=">=3.8",
 )

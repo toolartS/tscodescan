@@ -1,11 +1,11 @@
-# dirscan
+# tscodescan
 
 AI-friendly directory scanner.
 
 ## Install
-pip install dirscan
+pip install tscodescan
 
 ## Usage
-dirscan
-dirscan --tree
-dirscan --grep auth
+tscodescan
+tscodescan --tree
+tscodescan --grep auth
