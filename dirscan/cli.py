@@ -5,13 +5,18 @@ DEFAULT_EXT = {".txt",".md",".py",".php",".js",".html",".css",".json",".sql"}
 DEFAULT_EXCLUDE = {".git","node_modules","vendor","__pycache__"}
 
 def get_download_dir():
-    system = platform.system().lower()
-    if "android" in system:
+    # Detect Termux explicitly
+    if os.path.exists("/data/data/com.termux"):
         return os.path.expanduser("~/storage/downloads")
+
+    system = platform.system().lower()
+
     if system == "linux":
         return os.path.expanduser("~/Downloads")
+
     if system == "windows":
-        return os.path.join(os.environ["USERPROFILE"], "Downloads")
+        return os.path.join(os.environ.get("USERPROFILE", ""), "Downloads")
+
     return os.getcwd()
 
 def build_tree(root, exclude):
