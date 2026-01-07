@@ -1,19 +1,13 @@
 # tscodescan
 
-`tscodescan` adalah CLI tool untuk memindai repository dan menghasilkan **artefak konteks yang AI-friendly**.
-Tool ini dirancang untuk workflow berbasis terminal (Linux / Termux) dan fokus pada **struktur, makna, dan konteks repository**, bukan sekadar dump file.
+**tscodescan** adalah *repository artifact generator* berbasis CLI.  
+Tool ini dipakai untuk membaca struktur repo, merangkum isinya, dan (jika diminta)
+menghasilkan **artifact teks** yang AI-friendly.
 
----
-
-## Konsep Utama
-
-`tscodescan` membedakan antara **scan isi**, **analisis struktur**, dan **diagnosis repository**.
-
-- **Scan** → isi file (artefak utama)
-- **Summary** → identitas & makna repository
-- **Tree** → struktur direktori
-- **Raw** → dump tanpa filter
-- **Doctor** → diagnosis & maintenance
+Project ini adalah evolusi dari `dirscan`, dengan fokus:
+- deterministik
+- artifact-first
+- CLI sebagai source of truth
 
 ---
 
@@ -23,87 +17,133 @@ Tool ini dirancang untuk workflow berbasis terminal (Linux / Termux) dan fokus p
 pip install tscodescan
 ```
 
-Atau mode development:
+Atau mode development (editable):
 
 ```bash
+git clone https://github.com/toolartS/tscodescan
+cd tscodescan
 pip install -e .
 ```
+
+Command yang tersedia:
+- `tscodescan`
+- `tsc` (alias singkat)
 
 ---
 
 ## Penggunaan Dasar
 
+### Default Scan (CLI only)
+
 ```bash
-tscodescan
+tsc [path]
 ```
 
-Default scan menghasilkan **document scan** (artefak utama) berisi:
-- struktur file
-- isi source code (text-based)
-- ignore otomatis untuk folder noise
+Output **tidak membuat file**.  
+Yang ditampilkan di CLI:
 
-Output disimpan ke:
+1. Tree struktur repo
+2. Summary (komposisi file & bahasa)
 
-```
-~/storage/downloads/Scan/<repo>/
+Contoh:
+```text
+.
+├── scan
+│   └── cli.py
+├── README.md
+└── setup.py
+
+SUMMARY:
+- Python : 3 files
+- Markdown : 1 file
 ```
 
 ---
 
-## Modes & Flags
+## Mode Artifact (`-i`)
 
-### Document Scan (Default)
 ```bash
-tscodescan
+tsc -i [ID] [path]
 ```
 
-### Tree (CLI Only)
-```bash
-tscodescan --tree
+- **Tanpa konfirmasi**
+- Langsung membuat artifact
+- Output file disimpan di:
+
+```text
+~/storage/downloads/Scan/<repo>/
 ```
 
-### Tree File
+Contoh:
 ```bash
-tscodescan --tf
+tsc -i
+tsc -i 2 ~/myrepo
 ```
 
-### Raw Scan
-```bash
-tscodescan --raw
+Hasil:
+```text
+scan-myrepo.txt
+scan-2-myrepo.txt
 ```
 
-### Summary (Analisis Struktur)
+Isi artifact:
+- Header repo
+- Tree
+- Full scan file (dengan ignore default, non-raw)
+
+---
+
+## Doctor Mode (`-d`)
+
 ```bash
-tscodescan --summary
+tsc -d [path]
 ```
 
-Summary menganalisis:
-- tipe repository
-- komposisi bahasa
-- sinyal dokumentasi (heading Markdown)
-- sinyal kematangan repo
+Digunakan untuk diagnosis repository.
 
-### Doctor (Diagnosis Repository)
-```bash
-tscodescan --doctor
+Yang dicek:
+- Apakah repo Git
+- Noise directory (`.git`, `Scan`)
+- Ukuran repo (auto unit: B / KB / MB / GB)
+
+Contoh output:
+```text
+=== TSCODESCAN DOCTOR ===
+
+✔ Git repository detected
+⚠ Noise: .git
+⚠ Noise: Scan
+
+Repo size: 1.12 MB
 ```
 
-### ID Marker
+---
+
+## Raw Scan (`-r`)
+
 ```bash
-tscodescan --raw -i 3
+tsc -r -i [path]
 ```
+
+- Mengabaikan semua ignore
+- Dipakai hanya jika benar-benar ingin dump penuh
+- Biasanya **tidak disarankan** untuk workflow normal
 
 ---
 
 ## Filosofi Desain
 
-- CLI-first
-- Terminal-friendly (Termux compatible)
-- Artefak sebagai source of context
-- Git sebagai source of truth
+- CLI > GUI
+- File artifact > chat ephemeral
+- Deterministik > heuristik
+- Satu command = satu makna
+
+Tool ini **bukan sekadar scanner**, tapi
+**alat komunikasi manusia ↔ AI berbasis artifact**.
 
 ---
 
 ## Lisensi
 
-MIT
+MIT License
+
