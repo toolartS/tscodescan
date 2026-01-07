@@ -116,19 +116,6 @@ Contoh output:
 
 Repo size: 1.12 MB
 ```
-
----
-
-## Raw Scan (`-r`)
-
-```bash
-tsc -r -i [path]
-```
-
-- Mengabaikan semua ignore
-- Dipakai hanya jika benar-benar ingin dump penuh
-- Biasanya **tidak disarankan** untuk workflow normal
-
 ---
 
 ## Filosofi Desain
