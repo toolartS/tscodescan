@@ -125,9 +125,6 @@ Repo size: 1.12 MB
 - Deterministik > heuristik
 - Satu command = satu makna
 
-Tool ini **bukan sekadar scanner**, tapi
-**alat komunikasi manusia ↔ AI berbasis artifact**.
-
 ---
 
 ## Lisensi
