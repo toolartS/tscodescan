@@ -1,12 +1,20 @@
-# python
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
 
-# build
-build/
+# Packaging
 dist/
+build/
 *.egg-info/
 
-# backup
+# Virtualenv
+.venv/
+venv/
+
+# Artifacts
 *.bak
-*.bak.*
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
