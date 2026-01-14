@@ -1,51 +1,43 @@
 from collections import Counter
 from pathlib import Path
 
-LANGUAGE_MAP = {
-    '.py': 'Python',
-    '.js': 'JavaScript',
-    '.ts': 'TypeScript',
-    '.html': 'HTML',
-    '.css': 'CSS',
-    '.md': 'Markdown',
+IGNORE_DIRS = {
+    '.git', '.venv', 'venv', 'build', 'dist',
+    '__pycache__', '.pytest_cache', '.mypy_cache',
+    '.egg-info'
 }
 
-def analyze_repo(root):
+def analyze_repo(root: str):
     counter = Counter()
-    total = 0
-
-    for p in Path(root).rglob("*"):
-        if p.is_file():
-            lang = LANGUAGE_MAP.get(p.suffix.lower())
-            if lang:
-                counter[lang] += 1
-                total += 1
-
-    return counter, total
-
-def infer_identity(root):
     root = Path(root)
-    if (root / "setup.py").exists() and (root / "scan/cli.py").exists():
-        return "Python CLI Tool"
-    return "Source Code Repository"
 
-def render_summary(root):
-    counter, total = analyze_repo(root)
-    identity = infer_identity(root)
+    for p in root.rglob("*"):
+        if not p.is_file():
+            continue
+
+        if any(part in IGNORE_DIRS for part in p.parts):
+            continue
+
+        ext = p.suffix.lower() or "<noext>"
+        counter[ext] += 1
+
+    return counter
+
+def render_summary(root: str) -> str:
+    counter = analyze_repo(root)
+    total = sum(counter.values())
 
     lines = [
         "# =============================================",
         "# TSCODESCAN SUMMARY",
         "# =============================================",
         "",
-        "Identity:",
-        f"- {identity}",
+        f"Total files: {total}",
         "",
-        "Language Composition:",
+        "File Extensions:",
     ]
 
-    for lang, cnt in counter.most_common():
-        pct = int(cnt / total * 100) if total else 0
-        lines.append(f"- {lang:<10}: {cnt} files ({pct}%)")
+    for ext in sorted(counter):
+        lines.append(f"- {ext}: {counter[ext]}")
 
     return "\n".join(lines)
