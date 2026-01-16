@@ -13,6 +13,11 @@ def main():
     p.add_argument("-i", nargs="?", const=True)
     p.add_argument("-r", action="store_true")
     p.add_argument("--web", help="scan visible text from web url")
+    p.add_argument(
+        "--from",
+        dest="web_from",
+        help="Start extracting web text from this heading"
+    )
 
     args = p.parse_args()
 
